@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductDtoMapper {
-
     public Product mapToModel(ProductRequestDto requestDto) {
         Product product = new Product();
         product.setPrice(requestDto.getPrice());

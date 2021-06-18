@@ -22,10 +22,6 @@ public class PasswordValidator implements ConstraintValidator<Password, UserRegi
         Object fieldMatchValue = new BeanWrapperImpl(registrationDto)
                 .getPropertyValue(fieldMatch);
 
-        if (fieldValue != null) {
-            return fieldValue.equals(fieldMatchValue);
-        } else {
-            return false;
-        }
+        return fieldValue != null && fieldValue.equals(fieldMatchValue);
     }
 }
