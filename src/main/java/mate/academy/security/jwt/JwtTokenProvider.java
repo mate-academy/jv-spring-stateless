@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import mate.academy.exception.InvalidJwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -51,7 +52,7 @@ public class JwtTokenProvider {
                 userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    private String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -68,7 +69,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("Expired or invalid JWT token", e); // Create exception
+            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token", e);
         }
     }
 }
