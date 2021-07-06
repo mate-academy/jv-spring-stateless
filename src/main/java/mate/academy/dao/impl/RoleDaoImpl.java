@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.RoleDao;
 import mate.academy.exception.DataProcessingException;
