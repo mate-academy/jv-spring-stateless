@@ -1,8 +1,10 @@
 package mate.academy.security.jwt;
 
-import io.jsonwebtoken.*;
-import java.net.http.HttpRequest;
-import java.nio.charset.StandardCharsets;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +49,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails,
+                "", userDetails.getAuthorities());
     }
 
     public String getUsername(String token) {
