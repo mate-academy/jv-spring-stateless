@@ -12,33 +12,38 @@
     <properties>
         <jdk.version>11</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+        <maven.checkstyle.plugin.configLocation>
+            https://raw.githubusercontent.com/mate-academy/style-guides/master/java/checkstyle.xml
+        </maven.checkstyle.plugin.configLocation>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.3.7</version>
+            <version>5.3.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>5.3.7</version>
+            <version>5.3.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>5.5.0</version>
+            <version>5.5.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>5.5.0</version>
+            <version>5.5.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>5.5.0</version>
+            <version>5.5.3</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -48,7 +53,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.16</version>
+            <version>8.0.24</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -59,7 +64,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.7</version>
+            <version>5.3.3</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -96,7 +101,12 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.1.7.Final</version>
+            <version>6.1.6.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
     </dependencies>
 
@@ -105,7 +115,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.3.1</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -118,8 +128,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
                     <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
+                        <source>11</source>
+                        <target>11</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
