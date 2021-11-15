@@ -54,21 +54,21 @@ public class InjectController {
         userService.save(alice);
 
         // save products
-        Product iPhone = new Product();
-        iPhone.setName("iPhone 7");
-        iPhone.setPrice(BigDecimal.valueOf(499));
+        Product nokia = new Product();
+        nokia.setName("Nokia");
+        nokia.setPrice(BigDecimal.valueOf(499));
 
         Product samsung = new Product();
         samsung.setName("Samsung S20");
         samsung.setPrice(BigDecimal.valueOf(695));
 
-        Product samsung10 = new Product();
-        samsung10.setName("Samsung S10");
-        samsung10.setPrice(BigDecimal.valueOf(600));
+        Product xiaomi = new Product();
+        xiaomi.setName("Xiaomi");
+        xiaomi.setPrice(BigDecimal.valueOf(600));
 
-        productService.save(iPhone);
+        productService.save(nokia);
         productService.save(samsung);
-        productService.save(samsung10);
+        productService.save(xiaomi);
         return "Done!";
     }
 }
