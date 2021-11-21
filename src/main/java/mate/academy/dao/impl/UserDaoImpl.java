@@ -3,6 +3,7 @@ package mate.academy.dao.impl;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,6 +24,16 @@ public class UserDaoImpl extends AbstractDao<User, Long> implements UserDao {
                     "from User u join fetch u.roles where u.email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
+        }
+    }
+
+    @Override
+    public List<User> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from User u join fetch u.roles ", User.class).getResultList();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get all entities: "
+                    + clazz.getSimpleName(), e);
         }
     }
 }
