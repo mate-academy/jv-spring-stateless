@@ -10,6 +10,7 @@ import mate.academy.model.User;
 import mate.academy.service.ProductService;
 import mate.academy.service.RoleService;
 import mate.academy.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
