@@ -2,19 +2,23 @@ package mate.academy.service.mapper;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import mate.academy.model.User;
 import mate.academy.model.dto.RoleResponseDto;
 import mate.academy.model.dto.UserRegistrationDto;
 import mate.academy.model.dto.UserResponseDto;
+import mate.academy.service.RoleService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
     private final RoleMapper roleMapper;
+    private final RoleService roleService;
 
-    public UserMapper(RoleMapper roleMapper) {
+    public UserMapper(RoleMapper roleMapper, RoleService roleService) {
         this.roleMapper = roleMapper;
+        this.roleService = roleService;
     }
 
     public User mapToModel(UserRegistrationDto requestDto) {
@@ -22,6 +26,7 @@ public class UserMapper {
         user.setPassword(requestDto.getPassword());
         user.setEmail(requestDto.getEmail());
         user.setRoles(new HashSet<>());
+        user.setRoles(Set.of(roleService.getRoleByName("USER")));
         return user;
     }
 
