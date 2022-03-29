@@ -49,7 +49,7 @@ public class InjectController {
         User alice = new User();
         alice.setEmail("alice");
         alice.setPassword("1234");
-
+        alice.setRoles(new HashSet<>(roles));
         userService.save(alice);
 
         // save products
