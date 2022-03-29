@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-    private final Integer BEARER_TOKEN = 7;
+    private static final Integer BEARER_TOKEN = 7;
 
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
