@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -39,15 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/cinema-halls/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/cinema-halls/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/movies/**").permitAll()
-//                .antMatchers("/movie-sessions/available").permitAll()
-//                .antMatchers("/movie-sessions/**").hasRole("ADMIN")
-//                .antMatchers("/orders/**").hasRole("USER")
-//                .antMatchers("/shopping-carts/**").hasRole("USER")
-//                .antMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/products/*", "/users/*").hasRole("ADMIN")
                 .antMatchers("/register", "/login", "/inject").permitAll()
                 .anyRequest()

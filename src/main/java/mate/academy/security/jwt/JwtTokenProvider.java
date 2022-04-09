@@ -1,15 +1,15 @@
 package mate.academy.security.jwt;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import mate.academy.exception.InvalidJwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private static final String AUTHORIZATION = "Authorization";
-    public static final int SUB_TOKEN_INDEX = 7;
+    private static final int SUB_TOKEN_INDEX = 7;
     @Value("${jwt.token.secret}")
     private String jwtSecret;
     @Value("${jwt.token.expire.mil}")
@@ -67,13 +67,10 @@ public class JwtTokenProvider {
         }
     }
 
-
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
                 userDetails.getAuthorities());
-
-
     }
 
     private String getUsername(String token) {
