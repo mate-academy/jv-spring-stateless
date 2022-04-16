@@ -55,7 +55,7 @@ public class InjectController {
 
         // save products
         Product apple = new Product();
-        apple.setName("apple 7");
+        apple.setName("iPhone 7");
         apple.setPrice(BigDecimal.valueOf(499));
 
         Product samsung = new Product();
