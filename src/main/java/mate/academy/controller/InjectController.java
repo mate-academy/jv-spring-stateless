@@ -21,7 +21,9 @@ public class InjectController {
     private final ProductService productService;
     private final UserService userService;
 
-    public InjectController(RoleService roleService, ProductService productService, UserService userService) {
+    public InjectController(RoleService roleService,
+                            ProductService productService,
+                            UserService userService) {
         this.roleService = roleService;
         this.productService = productService;
         this.userService = userService;
@@ -33,12 +35,10 @@ public class InjectController {
         if (!roles.isEmpty()) {
             return "Injection was completed";
         }
-        // Save roles
         roleService.save(new Role(Role.RoleName.ADMIN));
         roleService.save(new Role(Role.RoleName.USER));
         roles = roleService.findAll();
 
-        // save users
         User bob = new User();
         bob.setEmail("bob");
         bob.setPassword("1234");
@@ -51,10 +51,9 @@ public class InjectController {
         alice.setRoles(Set.of(roles.get(0)));
         userService.save(alice);
 
-        // save products
-        Product iPhone = new Product();
-        iPhone.setName("iPhone 7");
-        iPhone.setPrice(BigDecimal.valueOf(499));
+        Product iphone = new Product();
+        iphone.setName("iphone 7");
+        iphone.setPrice(BigDecimal.valueOf(499));
 
         Product samsung = new Product();
         samsung.setName("Samsung S20");
@@ -64,7 +63,7 @@ public class InjectController {
         samsung10.setName("Samsung S10");
         samsung10.setPrice(BigDecimal.valueOf(600));
 
-        productService.save(iPhone);
+        productService.save(iphone);
         productService.save(samsung);
         productService.save(samsung10);
         return "Done!";
