@@ -77,15 +77,15 @@ public class JwtTokenProvider {
                 userDetails.getAuthorities());
     }
 
-    public String getName(String token) {
-        return JWT.decode(token).getSubject();
-    }
-
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    private String getName(String token) {
+        return JWT.decode(token).getSubject();
     }
 }
