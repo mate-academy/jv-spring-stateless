@@ -1,9 +1,13 @@
 package mate.academy.jwt;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,23 +15,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-
 @Component
 public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length:3600000}")
     private long ttl;
-    private  final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public JwtTokenProvider(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
+
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -46,6 +45,7 @@ public class JwtTokenProvider {
                 .compact();
 
     }
+
     public boolean validateToken(String token) {
         if (token == null) {
             return false;
@@ -55,7 +55,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token)
                     .getBody()
                     .getExpiration().after(new Date());
-        } catch (Exception exception){
+        } catch (Exception exception) {
             throw new InvalidJwtAuthenticationException("Can't authenticate with token: "
                     + token, exception);
         }
