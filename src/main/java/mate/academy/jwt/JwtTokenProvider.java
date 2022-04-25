@@ -1,11 +1,9 @@
 package mate.academy.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,35 +36,27 @@ public class JwtTokenProvider {
     public String createToken(String login, List<String> roles) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + ttl);
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-            return JWT.create()
-                    .withSubject(login)
-                    .withClaim("roles", roles)
-                    .withIssuedAt(now)
-                    .withExpiresAt(validity)
-                    .sign(algorithm);
-        } catch (JWTCreationException e) {
-            throw new RuntimeException("Can't create token with login: " + login
-                    + "; and roles: " + roles, e);
-        }
+        Claims claims = Jwts.claims().setSubject(login);
+        claims.put("roles", roles);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
     }
     public boolean validateToken(String token) {
-        if (token == null) {
-            return false;
-        }
-        DecodedJWT jwt;
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .build();
-            jwt = verifier.verify(token);
-        } catch (JWTVerificationException exception){
+            return Jwts.parser().setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration().after(new Date());
+        } catch (Exception exception){
             throw new InvalidJwtAuthenticationException("Can't authenticate with token: "
                     + token, exception);
         }
-        Date now = new Date();
-        return jwt.getExpiresAt().after(now);
+
     }
 
     public Authentication getAuthentication(String token) {
@@ -86,6 +76,10 @@ public class JwtTokenProvider {
     }
 
     private String getName(String token) {
-        return JWT.decode(token).getSubject();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
