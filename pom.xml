@@ -16,7 +16,6 @@
             https://raw.githubusercontent.com/mate-academy/style-guides/master/java/checkstyle.xml
         </maven.checkstyle.plugin.configLocation>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -106,7 +105,6 @@
             <version>0.9.1</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
