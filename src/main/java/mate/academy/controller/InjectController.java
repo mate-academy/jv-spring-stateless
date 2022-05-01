@@ -21,7 +21,8 @@ public class InjectController {
     private final ProductService productService;
     private final UserService userService;
 
-    public InjectController(RoleService roleService, ProductService productService, UserService userService) {
+    public InjectController(RoleService roleService, ProductService productService,
+                            UserService userService) {
         this.roleService = roleService;
         this.productService = productService;
         this.userService = userService;
