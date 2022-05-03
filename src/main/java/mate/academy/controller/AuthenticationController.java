@@ -1,10 +1,12 @@
 package mate.academy.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
+import mate.academy.model.dto.LoginResponseDto;
 import mate.academy.model.dto.UserLoginDto;
 import mate.academy.model.dto.UserRegistrationDto;
 import mate.academy.model.dto.UserResponseDto;
@@ -38,14 +40,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto)
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid UserLoginDto userLoginDto)
             throws AuthenticationException {
         User user = authenticationService.login(userLoginDto.getLogin(),
                 userLoginDto.getPassword());
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles()
+        List<String> roles = user.getRoles()
                 .stream()
                 .map(r -> r.getRoleName().name())
-                .collect(Collectors.toList()));
-        return new ResponseEntity<>(Map.of("token", token), HttpStatus.OK);
+                .collect(Collectors.toList());
+        LoginResponseDto responseDto = new LoginResponseDto();
+        responseDto.setToken(jwtTokenProvider.createToken(user.getEmail(),roles));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
