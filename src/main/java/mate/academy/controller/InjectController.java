@@ -52,9 +52,9 @@ public class InjectController {
         userService.save(alice);
 
         // save products
-        Product iPhone = new Product();
-        iPhone.setName("iPhone 7");
-        iPhone.setPrice(BigDecimal.valueOf(499));
+        Product apple = new Product();
+        apple.setName("iPhone 7");
+        apple.setPrice(BigDecimal.valueOf(499));
 
         Product samsung = new Product();
         samsung.setName("Samsung S20");
@@ -64,7 +64,7 @@ public class InjectController {
         samsung10.setName("Samsung S10");
         samsung10.setPrice(BigDecimal.valueOf(600));
 
-        productService.save(iPhone);
+        productService.save(apple);
         productService.save(samsung);
         productService.save(samsung10);
         return "Done!";
