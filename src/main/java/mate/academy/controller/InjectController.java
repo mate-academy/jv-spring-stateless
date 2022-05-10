@@ -29,14 +29,16 @@ public class InjectController {
 
     @GetMapping
     public String injectData() {
-        List<Role> roles = roleService.findAll();
+/*        List<Role> roles = roleService.findAll();
         if (!roles.isEmpty()) {
             return "Injection was completed";
         }
+
+ */
         // Save roles
         roleService.save(new Role(Role.RoleName.ADMIN));
         roleService.save(new Role(Role.RoleName.USER));
-        roles = roleService.findAll();
+        List<Role> roles = roleService.findAll();
 
         // save users
         User bob = new User();
