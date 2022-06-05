@@ -1,6 +1,5 @@
 package mate.academy.controller;
 
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import mate.academy.exception.AuthenticationException;

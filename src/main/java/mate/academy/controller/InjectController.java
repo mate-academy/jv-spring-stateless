@@ -49,8 +49,14 @@ public class InjectController {
         User alice = new User();
         alice.setEmail("alice");
         alice.setPassword("1234");
-        alice.setRoles(Set.of(roles.get(0)));
+        alice.setRoles(Set.of(roles.get(1)));
         userService.save(alice);
+
+        User john = new User();
+        john.setEmail("john");
+        john.setPassword("1234");
+        john.setRoles(Set.of(roles.get(0)));
+        userService.save(john);
 
         // save products
         Product iphone = new Product();
