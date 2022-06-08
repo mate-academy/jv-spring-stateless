@@ -1,9 +1,9 @@
 package mate.academy.controller;
 
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
-
 import mate.academy.exception.AuthenticationException;
-import mate.academy.model.Role;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserLoginDto;
 import mate.academy.model.dto.UserRegistrationDto;
@@ -17,16 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @RestController
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthenticationController(AuthenticationService authenticationService, UserMapper userMapper, JwtTokenProvider jwtTokenProvider) {
+    public AuthenticationController(AuthenticationService authenticationService,
+                                    UserMapper userMapper, JwtTokenProvider jwtTokenProvider) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
         this.jwtTokenProvider = jwtTokenProvider;
