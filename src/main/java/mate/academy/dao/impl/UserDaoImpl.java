@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.model.User;
@@ -13,6 +14,15 @@ public class UserDaoImpl extends AbstractDao<User, Long> implements UserDao {
     @Autowired
     public UserDaoImpl(SessionFactory sessionFactory) {
         super(sessionFactory, User.class);
+    }
+
+    @Override
+    public List<User> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                    "select distinct u from User u join fetch u.roles", User.class)
+                    .getResultList();
+        }
     }
 
     @Override
