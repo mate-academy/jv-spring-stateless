@@ -17,15 +17,6 @@ public class UserDaoImpl extends AbstractDao<User, Long> implements UserDao {
     }
 
     @Override
-    public List<User> findAll() {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(
-                    "select distinct u from User u join fetch u.roles", User.class)
-                    .getResultList();
-        }
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery(
