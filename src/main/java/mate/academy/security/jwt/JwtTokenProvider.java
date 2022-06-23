@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-    private static final int COUNT_OF_SYMBOL_BEFORE_TOKEN = 7;
+    private static final int START_INDEX_OF_TOKEN = 7;
     @Value("${security.jwt.token.secret-key:asdklalfsdkjldajidiagjadj"
             + "[poadjgpajdgdajfpoijmcadjfpodoighuadhgbuihafiok}")
     private String secretKey;
@@ -63,7 +63,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(COUNT_OF_SYMBOL_BEFORE_TOKEN);
+            return bearerToken.substring(START_INDEX_OF_TOKEN);
         }
         return null;
     }
