@@ -38,12 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register","/login","/inject").permitAll()
+                .antMatchers("/register", "/login", "/inject").permitAll()
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
                 .headers().frameOptions().disable();
-
     }
 }
