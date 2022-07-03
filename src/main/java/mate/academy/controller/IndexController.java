@@ -3,9 +3,11 @@ package mate.academy.controller;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/index")
 public class IndexController {
     @GetMapping("/")
     public String hello(Authentication authentication, HttpServletRequest request) {
