@@ -1,5 +1,6 @@
 package mate.academy.config;
 
+import mate.academy.model.Role;
 import mate.academy.security.jwt.JwtConfigurer;
 import mate.academy.security.jwt.JwtTokenProvider;
 import org.springframework.http.HttpMethod;
@@ -39,10 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/register", "/login", "/inject").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/users/*", "/products/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/users/*", "/products/*").hasRole(Role.RoleName.ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/users", "/users/*", "/products")
-                .hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/users").hasAnyRole("ADMIN", "USER")
+                .hasAnyRole(Role.RoleName.ADMIN.name(), Role.RoleName.USER.name())
+                .antMatchers(HttpMethod.POST, "/users")
+                .hasAnyRole(Role.RoleName.ADMIN.name(), Role.RoleName.USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
