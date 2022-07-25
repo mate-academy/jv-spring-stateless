@@ -1,8 +1,8 @@
 package mate.academy.security.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final int BEARER_TOKEN_INDEX = 7;
     @Value("${security.jwt.token.secret-key}")
     private String jwtSecretKey;
     @Value("${security.jwt.token.life-time}")
@@ -62,7 +63,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(BEARER_TOKEN_INDEX);
         }
         return null;
     }
@@ -72,7 +73,7 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws
                     = Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
-        } catch (ExpiredJwtException | IllegalArgumentException exception) {
+        } catch (JwtException | IllegalArgumentException exception) {
             throw new InvalidJwtAuthenticationException("Token expired or invalid");
         }
     }
