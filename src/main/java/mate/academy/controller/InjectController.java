@@ -34,25 +34,23 @@ public class InjectController {
         if (!roles.isEmpty()) {
             return "Injection was completed";
         }
-        // Save roles
+
         roleService.save(new Role(Role.RoleName.ADMIN));
         roleService.save(new Role(Role.RoleName.USER));
         roles = roleService.findAll();
 
-        // save users
         User bob = new User();
-        bob.setEmail("bob");
+        bob.setEmail("bob@gmail.com");
         bob.setPassword("1234");
         bob.setRoles(new HashSet<>(roles));
         userService.save(bob);
 
         User alice = new User();
-        alice.setEmail("alice");
+        alice.setEmail("alice@gmail.com");
         alice.setPassword("1234");
         alice.setRoles(Set.of(roles.get(0)));
         userService.save(alice);
 
-        // save products
         Product iphone = new Product();
         iphone.setName("iPhone 7");
         iphone.setPrice(BigDecimal.valueOf(499));
