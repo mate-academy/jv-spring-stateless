@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ADMIN = Role.RoleName.ADMIN.name();
+    private static final String USER = Role.RoleName.USER.name();
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -33,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
@@ -40,15 +42,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/register*", "/login*", "/inject*").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/**").hasRole(ADMIN)
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
+                .antMatchers("/register", "/login", "/inject")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/products").permitAll()
+                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE).hasRole(ADMIN)
+                .anyRequest()
+                .authenticated()
                 .and()
-                .httpBasic()
+                .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .headers().frameOptions().disable();
     }
 }
