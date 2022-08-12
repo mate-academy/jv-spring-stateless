@@ -7,8 +7,10 @@ import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserLoginDto;
 import mate.academy.model.dto.UserRegistrationDto;
+import mate.academy.model.dto.UserResponseDto;
 import mate.academy.security.AuthenticationService;
 import mate.academy.security.jwt.JwtTokenProvider;
+import mate.academy.service.mapper.UserMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,16 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserMapper userMapper;
 
     public AuthenticationController(AuthenticationService authenticationService,
-                                    JwtTokenProvider jwtTokenProvider) {
+                                    JwtTokenProvider jwtTokenProvider, UserMapper userMapper) {
         this.authenticationService = authenticationService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userMapper = userMapper;
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody @Valid UserRegistrationDto requestDto) {
-        authenticationService.register(requestDto.getEmail(), requestDto.getPassword());
+    public UserResponseDto register(@RequestBody @Valid UserRegistrationDto requestDto) {
+        User user = authenticationService.register(requestDto.getEmail(),
+                requestDto.getPassword());
+        return userMapper.mapToDto(user);
     }
 
     @PostMapping("/login")
