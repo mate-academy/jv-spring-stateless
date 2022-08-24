@@ -69,7 +69,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public String getEmail(String jwtToken) {
+    public String getUsername(String jwtToken) {
         return Jwts.parserBuilder()
                 .setSigningKey(jwtSecretKey)
                 .build()
@@ -79,7 +79,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String jwtToken) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getEmail(jwtToken));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(jwtToken));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
                 userDetails.getAuthorities());
     }
