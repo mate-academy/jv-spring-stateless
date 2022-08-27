@@ -39,11 +39,11 @@ public class JwtTokenProvider {
     public String createToken(String email, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
-        Date date = new Date();
-        Date validity = new Date(date.getTime() + validityInMilliseconds);
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(date)
+                .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
