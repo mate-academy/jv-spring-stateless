@@ -13,7 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String ADMIN = Role.RoleName.ADMIN.name();
+    private static final String ROLE_ADMIN = Role.RoleName.ADMIN.name();
+    private static final String ROLE_USER = Role.RoleName.USER.name();
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -36,7 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/register", "/login", "/inject").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/{id}").hasRole(ADMIN)
+                .antMatchers(HttpMethod.GET, "/products", "/users").hasRole(ROLE_USER)
+                .antMatchers(HttpMethod.POST, "/products").hasRole(ROLE_USER)
+                .antMatchers(HttpMethod.DELETE).hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
