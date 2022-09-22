@@ -1,6 +1,5 @@
 package mate.academy.security.jwt;
 
-import mate.academy.config.SecurityConfig;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

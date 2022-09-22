@@ -1,7 +1,8 @@
 package mate.academy.controller;
 
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserLoginDto;
@@ -15,9 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class AuthenticationController {
@@ -41,8 +39,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto) throws AuthenticationException {
-        User user = authenticationService.login(userLoginDto.getLogin(), userLoginDto.getPassword());
+    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto)
+            throws AuthenticationException {
+        User user = authenticationService.login(userLoginDto.getLogin(),
+                userLoginDto.getPassword());
         String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles().stream()
                 .map(role -> role.getRoleName().name())
                 .collect(Collectors.toList()));
