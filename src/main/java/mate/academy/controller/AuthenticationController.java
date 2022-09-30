@@ -7,8 +7,10 @@ import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserLoginDto;
 import mate.academy.model.dto.UserRegistrationDto;
+import mate.academy.model.dto.UserResponseDto;
 import mate.academy.security.AuthenticationService;
 import mate.academy.security.jwt.JwtTokenProvider;
+import mate.academy.service.mapper.RoleMapper;
 import mate.academy.service.mapper.UserMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,24 +23,33 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RoleMapper roleMapper;
 
     public AuthenticationController(AuthenticationService authenticationService,
                                     UserMapper userMapper,
-                                    JwtTokenProvider jwtTokenProvider) {
+                                    JwtTokenProvider jwtTokenProvider,
+                                    RoleMapper roleMapper) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.roleMapper = roleMapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody @Valid UserRegistrationDto userRequestDto) {
+    public UserResponseDto register(@RequestBody @Valid UserRegistrationDto userRequestDto) {
         User user = authenticationService.register(userRequestDto.getEmail(),
                 userRequestDto.getPassword());
         String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles()
                 .stream()
                 .map(role -> role.getRoleName().name())
                 .collect(Collectors.toList()));
-        return new ResponseEntity<>(Map.of("token", token), HttpStatus.OK);
+        UserResponseDto responseDto = new UserResponseDto();
+        responseDto.setEmail(user.getEmail());
+        responseDto.setRoles(user.getRoles()
+                .stream()
+                .map(roleMapper::mapToDto)
+                .collect(Collectors.toList()));
+        return responseDto;
     }
 
     @PostMapping("/login")
