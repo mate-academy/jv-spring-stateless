@@ -52,9 +52,10 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest servletRequest) {
+        final int tokenPosition = 7;
         String bearerToken = servletRequest.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(tokenPosition);
         }
         return null;
     }
