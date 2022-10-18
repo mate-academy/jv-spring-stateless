@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final Integer START_POSITION_TOKEN = 7;
+
     @Value("secret")
     private String secretKey;
     @Value("3600000")
@@ -61,7 +63,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(START_POSITION_TOKEN);
         }
         return null;
     }
