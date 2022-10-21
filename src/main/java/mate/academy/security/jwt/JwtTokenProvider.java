@@ -23,9 +23,9 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     private static final Integer START_POSITION_TOKEN = 7;
 
-    @Value("secret")
+    @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
-    @Value("3600000")
+    @Value("${security.jwt.token.expire-length:3600000}")
     private Long validityInMiliseconds;
     private final UserDetailsService userDetailsService;
 
@@ -68,10 +68,10 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean isValidate(String token) {
+    public boolean isValid(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
+            return !claims.getBody().getExpiration().after(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid token", e);
         }
