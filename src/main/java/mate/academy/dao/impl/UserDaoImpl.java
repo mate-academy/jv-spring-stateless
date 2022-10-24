@@ -27,10 +27,20 @@ public class UserDaoImpl extends AbstractDao<User, Long> implements UserDao {
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "from User u join fetch u.roles where u.id = :id", User.class)
+                    .setParameter("id", id)
+                    .uniqueResultOptional();
+        }
+    }
+
+    @Override
     public List<User> findAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery(
-                    "from User u join fetch u.roles", User.class)
+                    "select distinct u from User u join fetch u.roles", User.class)
                 .getResultList();
         }
     }

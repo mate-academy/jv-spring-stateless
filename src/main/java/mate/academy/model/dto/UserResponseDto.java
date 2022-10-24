@@ -4,23 +4,14 @@ import java.util.List;
 
 public class UserResponseDto {
     private String email;
-    private String password;
     private List<RoleResponseDto> roles;
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public List<RoleResponseDto> getRoles() {
