@@ -27,7 +27,7 @@ public class UserMapper {
 
     public UserResponseDto mapToDto(User user) {
         UserResponseDto responseDto = new UserResponseDto();
-        responseDto.setLogin(user.getEmail());
+        responseDto.setEmail(user.getEmail());
         List<RoleResponseDto> roles = user.getRoles()
                 .stream()
                 .map(roleMapper::mapToDto)

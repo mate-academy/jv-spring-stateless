@@ -3,15 +3,15 @@ package mate.academy.model.dto;
 import java.util.List;
 
 public class UserResponseDto {
-    private String login;
+    private String email;
     private List<RoleResponseDto> roles;
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public List<RoleResponseDto> getRoles() {
