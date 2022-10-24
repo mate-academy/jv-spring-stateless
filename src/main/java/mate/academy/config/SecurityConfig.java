@@ -37,9 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .exceptionHandling().and()
                 .authorizeRequests()
-                .antMatchers("/register/**", "/login/**", "/inject/**", "/hello/**")
+                .antMatchers("/register*", "/login*", "/inject*", "/hello*")
                 .permitAll()
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .anyRequest()
@@ -47,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
-                .formLogin().permitAll().and()
-                .logout().permitAll().and()
                 .headers().frameOptions().disable();
     }
 }
