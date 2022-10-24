@@ -14,6 +14,7 @@ import mate.academy.exception.InvalidJwtAuthenticationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final int TOKEN_START_CHAR_NUMBER = 7;
     private final Logger logger = LogManager.getLogger(JwtTokenProvider.class);
 
     @Value("${security.jwt.token.secret-key:secret}")
@@ -68,10 +70,10 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.info("resolveToken bearerToken=" + bearerToken);
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(TOKEN_START_CHAR_NUMBER);
         }
         return null;
     }
