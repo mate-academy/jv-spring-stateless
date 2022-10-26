@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import mate.academy.validation.Email;
-import mate.academy.validation.Password;
 
 @Entity
 @Table(name = "users")
