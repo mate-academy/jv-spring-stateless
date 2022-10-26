@@ -7,12 +7,14 @@ import mate.academy.model.User;
 import mate.academy.model.dto.RoleResponseDto;
 import mate.academy.model.dto.UserRegistrationDto;
 import mate.academy.model.dto.UserResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
     private final RoleMapper roleMapper;
 
+    @Autowired
     public UserMapper(RoleMapper roleMapper) {
         this.roleMapper = roleMapper;
     }
