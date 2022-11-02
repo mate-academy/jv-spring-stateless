@@ -3,7 +3,6 @@ package mate.academy.exception;
 import org.springframework.http.HttpStatus;
 
 public class InvalidJwtAuthenticationException extends RuntimeException {
-    private final String message;
     private final HttpStatus httpStatus;
 
     public InvalidJwtAuthenticationException(String message, HttpStatus httpStatus) {
