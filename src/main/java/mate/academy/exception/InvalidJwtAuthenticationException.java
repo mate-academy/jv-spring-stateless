@@ -10,10 +10,6 @@ public class InvalidJwtAuthenticationException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
 
     public HttpStatus getHttpStatus() {
         return httpStatus;
