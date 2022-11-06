@@ -40,14 +40,14 @@ public class InjectController {
         roles = roleService.findAll();
 
         // save users
-        User bob = new User();
-        bob.setEmail("bob");
-        bob.setPassword("1234");
-        bob.setRoles(new HashSet<>(roles));
-        userService.save(bob);
+        User john = new User();
+        john.setEmail("john@gmail.com");
+        john.setPassword("1234");
+        john.setRoles(new HashSet<>(roles));
+        userService.save(john);
 
         User alice = new User();
-        alice.setEmail("alice");
+        alice.setEmail("alice@gmail.com");
         alice.setPassword("1234");
         alice.setRoles(Set.of(roles.get(0)));
         userService.save(alice);
