@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
+                .httpBasic()
+                .and()
                 .apply(jwtConfigurer)
                 .and()
                 .headers().frameOptions().disable();
