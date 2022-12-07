@@ -1,8 +1,8 @@
 package mate.academy.controller;
 
-import javax.validation.Valid;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserLoginDto;
