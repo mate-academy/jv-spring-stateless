@@ -2,7 +2,7 @@ package mate.academy.security.jwt;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -35,7 +35,7 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String email, Set<String> roles) {
+    public String createToken(String email, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
         Date now = new Date();
