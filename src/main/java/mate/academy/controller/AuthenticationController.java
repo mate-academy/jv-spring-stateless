@@ -42,8 +42,10 @@ public class AuthenticationController {
             throws AuthenticationException {
         User user = authenticationService.login(userRegistrationDto.getEmail(),
                 userRegistrationDto.getPassword());
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles().stream()
-                .map(role -> role.getRoleName().name()).collect(Collectors.toList()));
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles()
+                .stream()
+                .map(role -> role.getRoleName().name())
+                .collect(Collectors.toList()));
         return new ResponseEntity<>(Map.of("token",token), HttpStatus.OK);
     }
 }
