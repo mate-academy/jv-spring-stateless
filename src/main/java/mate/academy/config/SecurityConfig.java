@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/registration", "/login", "/inject").permitAll()
-                .antMatchers(HttpMethod.DELETE).hasRole("Admin")
+                .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
