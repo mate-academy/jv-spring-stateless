@@ -2,7 +2,6 @@ package mate.academy.service.mapper;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import mate.academy.model.User;
 import mate.academy.model.dto.RoleResponseDto;
 import mate.academy.model.dto.UserRegistrationDto;
@@ -31,7 +30,7 @@ public class UserMapper {
         List<RoleResponseDto> roles = user.getRoles()
                 .stream()
                 .map(roleMapper::mapToDto)
-                .collect(Collectors.toList());
+                .toList();
         responseDto.setRoles(roles);
         return responseDto;
     }
