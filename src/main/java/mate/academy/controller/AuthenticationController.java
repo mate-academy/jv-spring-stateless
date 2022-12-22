@@ -1,7 +1,6 @@
 package mate.academy.controller;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
@@ -21,14 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthenticationController(AuthenticationService authenticationService,
                                     UserMapper userMapper,
                                     JwtTokenProvider jwtTokenProvider) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/register")
@@ -43,11 +40,7 @@ public class AuthenticationController {
             throws AuthenticationException {
         User user = authenticationService.login(userLoginDto.getLogin(),
                 userLoginDto.getPassword());
-        String token = jwtTokenProvider.createToken(user.getEmail(),
-                user.getRoles()
-                        .stream()
-                        .map(role -> role.getRoleName().name())
-                        .collect(Collectors.toList()));
-        return new ResponseEntity<>(Map.of("token", token), HttpStatus.OK);
+        String token = authenticationService.getToken(user);
+        return new ResponseEntity<>(new TokenDtoMapper("token", token), HttpStatus.OK);
     }
 }
