@@ -2,8 +2,6 @@ package mate.academy.controller;
 
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-
 @Component
 public class TokenDtoMapper {
     private String key;

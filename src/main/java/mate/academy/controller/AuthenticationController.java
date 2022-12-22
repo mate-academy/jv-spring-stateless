@@ -1,6 +1,5 @@
 package mate.academy.controller;
 
-import java.util.Map;
 import javax.validation.Valid;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;

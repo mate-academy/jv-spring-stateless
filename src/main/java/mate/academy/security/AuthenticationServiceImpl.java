@@ -20,7 +20,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationServiceImpl(UserService userService,
                                      RoleService roleService,
-                                     PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+                                     PasswordEncoder passwordEncoder,
+                                     JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
