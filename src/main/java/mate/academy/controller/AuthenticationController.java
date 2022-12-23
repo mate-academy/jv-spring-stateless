@@ -40,6 +40,6 @@ public class AuthenticationController {
         User user = authenticationService.login(userLoginDto.getLogin(),
                 userLoginDto.getPassword());
         String token = authenticationService.getToken(user);
-        return new ResponseEntity<>(new TokenDtoMapper("token", token), HttpStatus.OK);
+        return new ResponseEntity<>(new TokenResponseDto("token", token), HttpStatus.OK);
     }
 }

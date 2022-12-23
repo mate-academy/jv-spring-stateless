@@ -1,10 +1,10 @@
 package mate.academy.controller;
 
-public class TokenDtoMapper {
+public class TokenResponseDto {
     private String key;
     private String value;
 
-    public TokenDtoMapper(String key, String value) {
+    public TokenResponseDto(String key, String value) {
         this.key = key;
         this.value = value;
     }
