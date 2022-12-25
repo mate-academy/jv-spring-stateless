@@ -29,6 +29,14 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(TOKEN_VALUE_START_INDEX);
+        }
+        return null;
+    }
+
     public String createToken(String login, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(login);
         claims.put("roles", roles);
@@ -36,18 +44,10 @@ public class JwtTokenProvider {
         Date validity = new Date(date.getTime() + validityInMilliseconds);
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(validity)
+                .setIssuedAt(date)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
-    }
-
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(TOKEN_VALUE_START_INDEX);
-        }
-        return null;
     }
 
     public boolean validateToken(String token) {
