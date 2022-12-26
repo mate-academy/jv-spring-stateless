@@ -21,7 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-    private static final int START_TOKEN_INDEX = 8;
+    private static final String HEADER_PREFIX = "Bearer";
+    private static final int START_TOKEN_INDEX = 7;
     @Value("$security.jwt.token.secret-key:secret")
     private String secretKey;
     private final long validityMilliseconds = 3600000;
@@ -65,7 +66,7 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER_NAME);
-        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
+        if (bearerToken != null && bearerToken.startsWith(HEADER_PREFIX)) {
             return bearerToken.substring(START_TOKEN_INDEX);
         }
         throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
