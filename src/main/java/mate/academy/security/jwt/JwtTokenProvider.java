@@ -5,8 +5,10 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import mate.academy.exception.InvalidJwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private static final int TOKEN_VALUE_START_INDEX = 7;
+    private static final String HEADER_NAME = "Authorization";
+    private static final String BEARER = "Bearer ";
+
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length:360000}")
@@ -29,9 +34,14 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
+    @PostConstruct
+    public void init() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+        String bearerToken = request.getHeader(HEADER_NAME);
+        if (bearerToken != null && bearerToken.startsWith(BEARER)) {
             return bearerToken.substring(TOKEN_VALUE_START_INDEX);
         }
         return null;
