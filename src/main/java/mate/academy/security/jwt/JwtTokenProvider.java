@@ -37,7 +37,7 @@ public class JwtTokenProvider {
     public void init() {
         String key = environment.getProperty("jwt-secret-secretKey");
         String validityTime = environment.getProperty("jwt-validity-time");
-        if (key != null & validityTime != null) {
+        if (key != null && validityTime != null) {
             this.secretKey = Keys.hmacShaKeyFor(key.getBytes());
             this.validityInMilliseconds = Long.parseLong(validityTime);
         } else {
