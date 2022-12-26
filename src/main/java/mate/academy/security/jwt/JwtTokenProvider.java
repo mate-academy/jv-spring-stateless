@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     private static final Long DEFAULT_VALIDITY_IN_MILLISECONDS = 360000000000000000L;
+    private static final String BEARER_PREFIX = "Bearer";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     private final UserDetailsService userDetailsService;
     private final Environment environment;
     private Key secretKey;
@@ -47,9 +49,9 @@ public class JwtTokenProvider {
     }
 
     public Optional<String> resolveToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer")) {
-            token = token.substring(6);
+        String token = request.getHeader(AUTHORIZATION_HEADER);
+        if (token != null && token.startsWith(BEARER_PREFIX)) {
+            token = token.substring(BEARER_PREFIX.length());
         }
         return Optional.ofNullable(token);
     }
