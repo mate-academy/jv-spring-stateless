@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/register", "/login", "/inject")
                 .permitAll()
-                .antMatchers(HttpMethod.DELETE,"/products/**", "users/**")
+                .antMatchers(HttpMethod.DELETE)
                 .hasRole(Role.RoleName.ADMIN.name())
                 .anyRequest()
                 .authenticated()

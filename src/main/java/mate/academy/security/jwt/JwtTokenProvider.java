@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final String TOKEN_HEADER = "Authorization";
+    private static final String TOKEN_BEARER_SUBSTRING = "Bearer ";
+    private static final int TOKEN_SUBSTRING_INDEX = 7;
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length:3600000}")
@@ -62,9 +65,9 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        String bearerToken = request.getHeader(TOKEN_HEADER);
+        if (bearerToken != null && bearerToken.startsWith(TOKEN_BEARER_SUBSTRING)) {
+            return bearerToken.substring(TOKEN_SUBSTRING_INDEX);
         }
         return null;
     }
