@@ -32,12 +32,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String servletPath = request.getServletPath();
-        return servletPath.equals("/login")
-                || servletPath.equals("/register")
-                || servletPath.equals("/inject");
-    }
 }

@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
@@ -13,7 +12,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import mate.academy.exception.InvalidJwtAuthenticationException;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,30 +21,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-    private static final Long DEFAULT_VALIDITY_IN_MILLISECONDS = 360000000000000000L;
     private static final String BEARER_PREFIX = "Bearer";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private final UserDetailsService userDetailsService;
-    private final Environment environment;
     private Key secretKey;
+    @Value("${jwt-validity-time:36000000000}")
     private Long validityInMilliseconds;
+    @Value("${jwt-secret-secretKey:secret12341515614}")
+    private String key;
 
-    public JwtTokenProvider(UserDetailsService userDetailsService, Environment environment) {
+    public JwtTokenProvider(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.environment = environment;
     }
 
     @PostConstruct
     public void init() {
-        String key = environment.getProperty("jwt-secret-secretKey");
-        String validityTime = environment.getProperty("jwt-validity-time");
-        if (key != null && validityTime != null) {
-            this.secretKey = Keys.hmacShaKeyFor(key.getBytes());
-            this.validityInMilliseconds = Long.parseLong(validityTime);
-        } else {
-            this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-            this.validityInMilliseconds = DEFAULT_VALIDITY_IN_MILLISECONDS;
-        }
+        this.secretKey = Keys.hmacShaKeyFor(key.getBytes());
     }
 
     public Optional<String> resolveToken(HttpServletRequest request) {
