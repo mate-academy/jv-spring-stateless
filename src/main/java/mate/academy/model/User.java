@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import mate.academy.validation.Email;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email
     @Column(unique = true, nullable = false)
     private String email;
 

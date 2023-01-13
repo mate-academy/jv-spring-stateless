@@ -10,6 +10,7 @@ import mate.academy.model.User;
 import mate.academy.service.ProductService;
 import mate.academy.service.RoleService;
 import mate.academy.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ public class InjectController {
     private final ProductService productService;
     private final UserService userService;
 
+    @Autowired
     public InjectController(RoleService roleService,
                             ProductService productService, UserService userService) {
         this.roleService = roleService;
@@ -41,13 +43,13 @@ public class InjectController {
 
         // save users
         User bob = new User();
-        bob.setEmail("bob");
+        bob.setEmail("bob@gmail.com");
         bob.setPassword("1234");
         bob.setRoles(new HashSet<>(roles));
         userService.save(bob);
 
         User alice = new User();
-        alice.setEmail("alice");
+        alice.setEmail("alice@gmail.com");
         alice.setPassword("1234");
         alice.setRoles(Set.of(roles.get(0)));
         userService.save(alice);

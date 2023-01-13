@@ -2,7 +2,9 @@ package mate.academy.model.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import mate.academy.validation.Password;
 
+@Password(field = "password", fieldMatch = "repeatPassword")
 public class UserRegistrationDto {
     private String email;
     @NotEmpty(message = "The password couldn't be empty")
