@@ -20,6 +20,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final String TOKEN_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer";
+    private static final int BEARER_VALUE_START_POSITION = 7;
+
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length:3600000}")
@@ -60,9 +64,9 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+        String bearerToken = req.getHeader(TOKEN_HEADER);
+        if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(BEARER_VALUE_START_POSITION);
         }
         return null;
     }
@@ -71,9 +75,10 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token", e);
+        } catch (JwtException e) {
+            throw new InvalidJwtAuthenticationException("JWT token is expired", e);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidJwtAuthenticationException("Invalid JWT token", e);
         }
     }
-
 }
