@@ -3,8 +3,8 @@ package mate.academy.model.dto;
 import java.util.List;
 
 public class UserResponseDto {
+    private Long id;
     private String email;
-    private String password;
     private List<RoleResponseDto> roles;
 
     public String getEmail() {
@@ -15,12 +15,12 @@ public class UserResponseDto {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public Long getId() {
+        return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<RoleResponseDto> getRoles() {
