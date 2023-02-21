@@ -1,16 +1,16 @@
 package mate.academy.security.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import mate.academy.exception.InvalidJwtAuthenticationException;
 import mate.academy.model.Role;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,10 @@ public class JwtTokenProvider {
 
     public String createToken(String login, List<Role> roles) {
         Claims claims = Jwts.claims().setSubject(login);
-        claims.put("roles", roles.stream().map(r -> r.getRoleName().name()).collect(Collectors.toList()));
+        claims.put("roles", roles
+                .stream()
+                .map(r -> r.getRoleName().name())
+                .collect(Collectors.toList()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
@@ -53,7 +56,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "",
+                userDetails.getAuthorities());
 
     }
 
