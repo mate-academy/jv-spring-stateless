@@ -1,8 +1,11 @@
 package mate.academy.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.model.Role;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserLoginDto;
 import mate.academy.model.dto.UserRegistrationDto;
@@ -34,7 +37,7 @@ public class AuthenticationController {
     public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto)
             throws AuthenticationException {
         User user = authenticationService.login(userLoginDto.getLogin(), userLoginDto.getPassword());
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles().stream().toList());
+        String token = jwtTokenProvider.createToken(user.getEmail(), new ArrayList<>(user.getRoles()));
         return new ResponseEntity<>(Map.of("token", token), HttpStatus.OK);
     }
 

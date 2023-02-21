@@ -3,6 +3,7 @@ package mate.academy.security.jwt;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import io.jsonwebtoken.Claims;
@@ -39,7 +40,7 @@ public class JwtTokenProvider {
 
     public String createToken(String login, List<Role> roles) {
         Claims claims = Jwts.claims().setSubject(login);
-        claims.put("roles", roles.stream().map(r -> r.getRoleName().name()));
+        claims.put("roles", roles.stream().map(r -> r.getRoleName().name()).collect(Collectors.toList()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
