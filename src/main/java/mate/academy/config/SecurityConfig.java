@@ -46,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE).hasRole(ADMIN)
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
                 .headers().frameOptions().disable();
