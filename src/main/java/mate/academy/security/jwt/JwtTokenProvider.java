@@ -18,12 +18,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final int SUBSTRING_INDEX = 7;
     @Value("${security.jwt.token.secret.key}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length}")
     private long validityInMilliseconds;
     private final UserDetailsService userDetailsService;
-    private static final int SUBSTRING_INDEX = 7;
 
     public JwtTokenProvider(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
