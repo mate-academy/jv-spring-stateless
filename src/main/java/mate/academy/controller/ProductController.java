@@ -1,6 +1,7 @@
 package mate.academy.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import mate.academy.model.dto.ProductResponseDto;
 import mate.academy.service.ProductService;
 import mate.academy.service.mapper.ProductDtoMapper;
@@ -26,7 +27,7 @@ public class ProductController {
     public List<ProductResponseDto> getAllProducts() {
         return productService.findAll().stream()
                 .map(productDtoMapper::mapToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")
