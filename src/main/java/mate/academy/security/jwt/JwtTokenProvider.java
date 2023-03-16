@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtTokenProvider {
+    private static final String TOKEN_PREFIX = "Bearer ";
     private final CustomUserDetailsService userDetailsService;
     @Value("${jwt.secret:secret}")
 
@@ -56,8 +57,8 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
+            return bearerToken.substring(TOKEN_PREFIX.length());
         }
         return null;
     }
