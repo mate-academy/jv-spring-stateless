@@ -31,6 +31,7 @@ public class UserMapper {
                 .stream()
                 .map(roleMapper::mapToDto)
                 .toList();
+        responseDto.setPassword(user.getPassword());
         responseDto.setRoles(roles);
         return responseDto;
     }
