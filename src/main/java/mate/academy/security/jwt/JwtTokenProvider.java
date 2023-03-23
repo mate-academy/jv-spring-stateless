@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:application.properties")
 public class JwtTokenProvider {
+    private static final int BEGIN_INDEX = 7;
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length}")
@@ -66,7 +67,7 @@ public class JwtTokenProvider {
     public String resolveKey(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(BEGIN_INDEX);
         }
         return null;
     }
