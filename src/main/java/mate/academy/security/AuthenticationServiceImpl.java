@@ -2,7 +2,7 @@ package mate.academy.security;
 
 import java.util.Optional;
 import java.util.Set;
-import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.InvalidJwtAuthenticationException;
 import mate.academy.model.User;
 import mate.academy.service.RoleService;
 import mate.academy.service.UserService;
@@ -34,11 +34,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User login(String login, String password) throws AuthenticationException {
+    public User login(String login, String password) throws InvalidJwtAuthenticationException {
         Optional<User> user = userService.findByEmail(login);
         String encodedPassword = passwordEncoder.encode(password);
         if (user.isEmpty() || !user.get().getPassword().equals(encodedPassword)) {
-            throw new AuthenticationException("Incorrect username or password!!!");
+            throw new InvalidJwtAuthenticationException("Incorrect username or password!!!");
         }
         return user.get();
     }
