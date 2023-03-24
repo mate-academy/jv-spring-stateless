@@ -45,7 +45,7 @@ public class AuthenticationController {
                 userLoginDto.getPassword());
         String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles()
                         .stream()
-                .map(r -> r.getRoleName().name())
+                .map(role -> role.getRoleName().name())
                 .collect(Collectors.toList()));
         return new ResponseEntity<>(Map.of("token", token), HttpStatus.ACCEPTED);
     }
