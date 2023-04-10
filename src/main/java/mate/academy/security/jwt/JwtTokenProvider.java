@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import mate.academy.exception.InvalidJwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,7 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
+    @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
