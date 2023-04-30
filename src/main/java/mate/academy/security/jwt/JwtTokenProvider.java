@@ -68,7 +68,7 @@ public class JwtTokenProvider {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(INDEX_TOKEN);
         }
-        return bearerToken;
+        return null;
     }
 
     public boolean validateToken(String token) {
