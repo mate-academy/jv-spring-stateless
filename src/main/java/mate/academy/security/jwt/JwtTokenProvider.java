@@ -2,6 +2,7 @@ package mate.academy.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length:3600000}")
@@ -49,7 +49,6 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest servletRequest) {
-
         String bearerToken = servletRequest.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
@@ -61,7 +60,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (InvalidJwtAuthenticationException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT Token", e);
         }
     }
