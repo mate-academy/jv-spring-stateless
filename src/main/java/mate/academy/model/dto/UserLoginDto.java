@@ -1,6 +1,6 @@
 package mate.academy.model.dto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class UserLoginDto {
     @NotBlank(message = "Login can't be null or blank!")
