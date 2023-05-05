@@ -41,13 +41,13 @@ public class InjectController {
 
         // save users
         User bob = new User();
-        bob.setEmail("bob");
+        bob.setEmail("bob@com.ua");
         bob.setPassword("1234");
         bob.setRoles(new HashSet<>(roles));
         userService.save(bob);
 
         User alice = new User();
-        alice.setEmail("alice");
+        alice.setEmail("alice@com.ua");
         alice.setPassword("1234");
         alice.setRoles(Set.of(roles.get(0)));
         userService.save(alice);
