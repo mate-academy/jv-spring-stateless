@@ -29,15 +29,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         user.setPassword(password);
         user.setRoles(Set.of(roleService.getRoleByName("USER")));
-        user = userService.save(user);
-        return user;
+        return userService.save(user);
     }
 
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> user = userService.findByEmail(login);
         String encodedPassword = passwordEncoder.encode(password);
-        if (user.isEmpty() || !user.get().getPassword().equals(encodedPassword)) {
+        if (user.isEmpty() || !passwordEncoder.matches(password, encodedPassword)) {
             throw new AuthenticationException("Incorrect username or password!!!");
         }
         return user.get();
