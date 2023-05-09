@@ -7,12 +7,11 @@ import mate.academy.exception.DataProcessingException;
 import mate.academy.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDaoImpl extends AbstractDao<User, Long> implements UserDao {
-    @Autowired
+
     public UserDaoImpl(SessionFactory sessionFactory) {
         super(sessionFactory, User.class);
     }

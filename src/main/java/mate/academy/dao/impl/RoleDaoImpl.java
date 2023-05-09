@@ -6,13 +6,11 @@ import mate.academy.exception.DataProcessingException;
 import mate.academy.model.Role;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class RoleDaoImpl extends AbstractDao<Role, Long> implements RoleDao {
 
-    @Autowired
     protected RoleDaoImpl(SessionFactory sessionFactory) {
         super(sessionFactory, Role.class);
     }

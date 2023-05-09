@@ -1,5 +1,6 @@
 package mate.academy.config;
 
+import mate.academy.model.Role;
 import mate.academy.security.jwt.JwtConfigurer;
 import mate.academy.security.jwt.JwtTokenProvider;
 import org.springframework.http.HttpMethod;
@@ -13,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String ROLE_ADMIN = "ADMIN";
-    private static final String ROLE_USER = "USER";
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -35,22 +34,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/register", "/inject").permitAll()
-                .antMatchers(HttpMethod.GET, "/*", "/products/*", "/users/*")
-                .hasAnyRole(ROLE_ADMIN, ROLE_USER)
-                .antMatchers(HttpMethod.POST, "/users/*").hasAnyRole(ROLE_ADMIN, ROLE_USER)
-                .antMatchers(HttpMethod.DELETE, "/products/*", "/users/*").hasRole(ROLE_ADMIN)
+                .antMatchers(HttpMethod.DELETE, "/products/*", "/users/*")
+                .hasRole(Role.RoleName.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .permitAll()
                 .and()
-                .httpBasic()
-                .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .headers().frameOptions().disable();
     }
 }
+
