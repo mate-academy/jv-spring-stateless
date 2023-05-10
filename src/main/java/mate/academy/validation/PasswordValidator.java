@@ -1,7 +1,7 @@
 package mate.academy.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import mate.academy.model.dto.UserRegistrationDto;
 import org.springframework.beans.BeanWrapperImpl;
 
