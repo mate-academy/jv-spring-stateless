@@ -84,7 +84,7 @@ public class JwtTokenProvider {
                     .toInstant()));
 
         } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Invalid token", e);
+            throw new InvalidJwtAuthenticationException("Invalid token consistency", e);
         }
     }
 
