@@ -54,7 +54,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-
     }
 
     public String resolveToken(HttpServletRequest req) {
@@ -69,7 +68,6 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
-
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Invalid token", e);
         }
