@@ -5,8 +5,10 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import mate.academy.exception.InvalidJwtAuthenticationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +22,6 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     private static final String AUTH_HEADER = "Authorization";
     private static final String TOKEN_MARK = "Bearer ";
-    private static final int DATA_START_POINT = 7;
     private final UserDetailsService userDetailsService;
     @Value("${security.jwt.token.secret-key:MyPrecious}")
     private String secretKey;
@@ -47,7 +48,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader(AUTH_HEADER);
         if (bearerToken != null && bearerToken.startsWith(TOKEN_MARK)) {
-            return bearerToken.substring(DATA_START_POINT);
+            return bearerToken.substring(TOKEN_MARK.length());
         }
         return null;
     }
@@ -69,5 +70,10 @@ public class JwtTokenProvider {
 
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    @PostConstruct
+    protected void init() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 }
