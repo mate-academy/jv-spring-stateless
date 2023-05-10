@@ -1,7 +1,6 @@
 package mate.academy.config;
 
-import mate.academy.security.jwt.JwtConfigure;
-import mate.academy.security.jwt.JwtTokenFilter;
+import mate.academy.security.jwt.JwtConfigurer;
 import mate.academy.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -38,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterBuilder(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -50,11 +48,9 @@ public class SecurityConfig extends WebSecurityConfiguration {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .apply(new JwtConfigure(jwtTokenProvider))
+                .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
                 .headers().frameOptions().disable();
-        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
