@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+    private static final int TOKEN_PREFIX_LENGTH = 7;
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey;
     @Value("${security.jwt.token.expire-length:3600000}")
@@ -54,14 +55,10 @@ public class JwtTokenProvider {
                 userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token).getBody().getSubject();
-    }
-
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(TOKEN_PREFIX_LENGTH);
         }
         return null;
     }
@@ -73,5 +70,9 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired ir invalid JWT token", e);
         }
+    }
+
+    private String getUsername(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token).getBody().getSubject();
     }
 }
