@@ -20,10 +20,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-    @Value("${security.jwt.token.secret-key:secret}")
+    @Value("${spring.jwt.token.secret-key:secret}")
     private String secretKey;
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private Long validityInMilliseconds;
+    @Value("${spring.jwt.token.expire-length:3600000}")
+    private long validityInMilliseconds;
     private final UserDetailsService userDetailsService;
 
     public JwtTokenProvider(UserDetailsService userDetailsService) {
@@ -44,7 +44,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.ES256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
@@ -54,13 +54,14 @@ public class JwtTokenProvider {
                 userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    private String getUsername(String token) {
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJwt(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;
@@ -68,8 +69,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey
-            ).parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token", e);

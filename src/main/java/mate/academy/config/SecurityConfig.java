@@ -3,6 +3,7 @@ package mate.academy.config;
 import mate.academy.security.jwt.JwtConfigurer;
 import mate.academy.security.jwt.JwtTokenProvider;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,6 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
@@ -33,9 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/registration,", "/login", "/inject")
+                .antMatchers("/register", "/login", "/inject")
                 .permitAll()
-                .antMatchers(HttpMethod.DELETE,"/products/{id}", "/users/{id}")
+                .antMatchers(HttpMethod.DELETE,"/products/*", "/users/*")
                 .hasRole(ADMIN)
                 .anyRequest()
                 .authenticated()
