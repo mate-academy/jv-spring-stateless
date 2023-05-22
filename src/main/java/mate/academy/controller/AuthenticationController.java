@@ -38,7 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto)
+    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto)
             throws AuthenticationException {
         User user = authenticationService.login(userLoginDto.getLogin(),
                 userLoginDto.getPassword());
