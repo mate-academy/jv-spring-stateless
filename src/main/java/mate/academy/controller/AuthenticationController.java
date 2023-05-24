@@ -24,7 +24,8 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     public AuthenticationController(AuthenticationService authenticationService,
-                                    UserMapper userMapper, JwtTokenProvider jwtTokenProvider) {
+                                    UserMapper userMapper,
+                                    JwtTokenProvider jwtTokenProvider) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
         this.jwtTokenProvider = jwtTokenProvider;

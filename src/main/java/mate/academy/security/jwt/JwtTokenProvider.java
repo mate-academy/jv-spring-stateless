@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-    private static final int TOKEN_VALUE = 7;
     private static final String REQUEST_HEADER = "Authorization";
     private static final String START_NAME_AUTH = "Bearer ";
     @Value("${security.jwt.token.secret-key:secret}")
@@ -54,8 +53,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
-                userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
     }
 
     public boolean validateToken(String token) {
@@ -79,7 +77,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader(REQUEST_HEADER);
         if (bearerToken != null && bearerToken.startsWith(START_NAME_AUTH)) {
-            return bearerToken.substring(TOKEN_VALUE);
+            return bearerToken.substring(START_NAME_AUTH.length());
         }
         return null;
     }

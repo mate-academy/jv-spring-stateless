@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 public class JwtTokenFilter extends GenericFilterBean {
-
     private final JwtTokenProvider jwtTokenProvider;
 
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
@@ -27,7 +26,6 @@ public class JwtTokenFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(req, res);
-
     }
 }
 
