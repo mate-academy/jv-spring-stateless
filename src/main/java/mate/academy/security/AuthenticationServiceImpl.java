@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String ROLE_USER_NAME = "USER";
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
@@ -28,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        user.setRoles(Set.of(roleService.getRoleByName("USER")));
+        user.setRoles(Set.of(roleService.getRoleByName(ROLE_USER_NAME)));
         user = userService.save(user);
         return user;
     }
@@ -37,9 +38,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> user = userService.findByEmail(login);
         String encodedPassword = passwordEncoder.encode(password);
-        if (user.isEmpty() || !user.get().getPassword().equals(encodedPassword)) {
+        if (!passwordEncoder.matches(password, encodedPassword)) {
             throw new AuthenticationException("Incorrect username or password!!!");
         }
-        return user.get();
+        return user.orElseThrow(
+                () -> new RuntimeException("User with login " + login + " not found"));
     }
 }
