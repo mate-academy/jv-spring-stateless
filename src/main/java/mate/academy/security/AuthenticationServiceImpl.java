@@ -3,6 +3,7 @@ package mate.academy.security;
 import java.util.Optional;
 import java.util.Set;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.model.Role;
 import mate.academy.model.User;
 import mate.academy.service.RoleService;
 import mate.academy.service.UserService;
@@ -28,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        user.setRoles(Set.of(roleService.getRoleByName("USER")));
+        user.setRoles(Set.of(roleService.getRoleByName(Role.RoleName.USER.name())));
         user = userService.save(user);
         return user;
     }
