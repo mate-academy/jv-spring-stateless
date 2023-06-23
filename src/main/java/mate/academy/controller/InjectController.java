@@ -32,14 +32,12 @@ public class InjectController {
     public String injectData() {
         List<Role> roles = roleService.findAll();
         if (!roles.isEmpty()) {
-            return "Injection was completed";
+            return "Injection was completed!";
         }
-        // Save roles
         roleService.save(new Role(Role.RoleName.ADMIN));
         roleService.save(new Role(Role.RoleName.USER));
         roles = roleService.findAll();
 
-        // save users
         User bob = new User();
         bob.setEmail("bob");
         bob.setPassword("1234");
@@ -52,7 +50,6 @@ public class InjectController {
         alice.setRoles(Set.of(roles.get(0)));
         userService.save(alice);
 
-        // save products
         Product iphone = new Product();
         iphone.setName("iPhone 7");
         iphone.setPrice(BigDecimal.valueOf(499));
