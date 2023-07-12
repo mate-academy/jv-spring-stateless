@@ -2,7 +2,6 @@ package mate.academy.config;
 
 import mate.academy.model.Role;
 import mate.academy.security.jwt.JwTokenProvider;
-import mate.academy.security.jwt.JwtConfigurer;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
