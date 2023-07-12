@@ -1,5 +1,6 @@
 package mate.academy.config;
 
+import mate.academy.model.Role;
 import mate.academy.security.jwt.JwtConfigurer;
 import mate.academy.security.jwt.JwtTokenProvider;
 import org.springframework.http.HttpMethod;
@@ -37,19 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/register", "/login", "/inject").permitAll()
-                .antMatchers(HttpMethod.GET, "/cinema-halls").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/cinema-halls").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/movies").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/movies").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/movie-sessions").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/movie-sessions").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/movie-sessions/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/orders").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/orders").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/shopping-carts").hasRole("USER")
-                .antMatchers(HttpMethod.PUT, "/shopping-carts").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/products/*", "/users/*")
+                .hasRole(Role.RoleName.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
