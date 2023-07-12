@@ -1,5 +1,6 @@
 package mate.academy.config;
 
+import mate.academy.model.Role;
 import mate.academy.security.jwt.JwTokenProvider;
 import mate.academy.security.jwt.JwtConfigurer;
 import org.springframework.http.HttpMethod;
@@ -38,28 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/login", "/register")
-                .permitAll()
-                .antMatchers("/inject")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/cinema-halls/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/cinema-halls/**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/movies/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/movies/**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/movie-sessions/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.POST, "/movie-sessions/**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/movie-sessions/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/orders/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/orders/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/shopping-carts/**").hasRole("USER")
-                .antMatchers(HttpMethod.PUT, "/shopping-carts/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .apply(new JwtConfigurer(jwTokenProvider))
-                .and()
-                .headers().frameOptions().disable();
+                .antMatchers("/register", "/login", "/inject").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/products/*",
+                        "/users/*").hasRole(Role.RoleName.ADMIN.name());
     }
 }
