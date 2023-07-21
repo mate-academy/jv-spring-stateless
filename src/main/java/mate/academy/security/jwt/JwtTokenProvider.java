@@ -2,6 +2,7 @@ package mate.academy.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
@@ -59,7 +60,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
-        } catch (RuntimeException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Invalid or expired jwt token ", e);
         }
     }
