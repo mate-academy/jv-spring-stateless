@@ -1,6 +1,5 @@
 package mate.academy.config;
 
-import mate.academy.model.Role;
 import mate.academy.model.Role.RoleName;
 import mate.academy.security.jwt.JwtConfigurer;
 import mate.academy.security.jwt.JwtTokenProvider;
