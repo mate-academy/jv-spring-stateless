@@ -1,6 +1,6 @@
 package mate.academy.security;
 
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
@@ -35,10 +35,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String login, String password) throws AuthenticationException {
-        Optional<User> user = userService.findByEmail(login);
-        if (user.isEmpty() || !passwordEncoder.matches(password, user.get().getPassword())) {
+        User user = userService.findByEmail(login).orElseThrow(() ->
+                new NoSuchElementException("Can't find user by login: " + login));
+        String encodedPassword = passwordEncoder.encode(password);
+        if (!passwordEncoder.matches(password, encodedPassword)) {
             throw new AuthenticationException("Incorrect username or password!!!");
         }
-        return user.get();
+        return user;
     }
 }
