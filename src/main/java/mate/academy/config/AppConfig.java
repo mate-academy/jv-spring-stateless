@@ -42,9 +42,8 @@ public class AppConfig {
         properties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         localSessionFactoryBean.setHibernateProperties(properties);
-
-        localSessionFactoryBean.setPackagesToScan("mate.academy.model");
-
+        localSessionFactoryBean.setPackagesToScan("mate.academy.model",
+                "mate/academy/security/jwt");
         return localSessionFactoryBean;
     }
 
