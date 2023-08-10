@@ -1,7 +1,6 @@
 package mate.academy.controller;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import mate.academy.model.Product;
@@ -43,7 +42,7 @@ public class InjectController {
         User bob = new User();
         bob.setEmail("bob");
         bob.setPassword("1234");
-        bob.setRoles(new HashSet<>(roles));
+        bob.setRoles(Set.of(roles.get(1)));
         userService.save(bob);
 
         User alice = new User();
