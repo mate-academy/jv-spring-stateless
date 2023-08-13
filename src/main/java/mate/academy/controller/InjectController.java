@@ -30,44 +30,50 @@ public class InjectController {
 
     @GetMapping
     public String injectData() {
-        List<Role> roles = roleService.findAll();
-        if (!roles.isEmpty()) {
-            return "Injection was completed";
-        }
-        // Save roles
-        roleService.save(new Role(Role.RoleName.ADMIN));
-        roleService.save(new Role(Role.RoleName.USER));
-        roles = roleService.findAll();
+//        List<Role> roles = roleService.findAll();
+//        if (!roles.isEmpty()) {
+//            return "Injection was completed";
+//        }
+//        // Save roles
+//        roleService.save(new Role(Role.RoleName.ADMIN));
+//        roleService.save(new Role(Role.RoleName.USER));
+//        roles = roleService.findAll();
 
         // save users
         User bob = new User();
-        bob.setEmail("bob");
+        bob.setEmail("bobUser");
         bob.setPassword("1234");
-        bob.setRoles(new HashSet<>(roles));
+        Role userRole = roleService.getRoleByName("USER");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+        bob.setRoles(userRoles);
         userService.save(bob);
 
         User alice = new User();
-        alice.setEmail("alice");
+        alice.setEmail("aliceAdmin");
         alice.setPassword("1234");
-        alice.setRoles(Set.of(roles.get(0)));
+        Role adminRole = roleService.getRoleByName("ADMIN");
+        Set<Role> adminRoles = new HashSet<>();
+        adminRoles.add(adminRole);
+        alice.setRoles(adminRoles);
         userService.save(alice);
 
         // save products
-        Product iphone = new Product();
-        iphone.setName("iPhone 7");
-        iphone.setPrice(BigDecimal.valueOf(499));
-
-        Product samsung = new Product();
-        samsung.setName("Samsung S20");
-        samsung.setPrice(BigDecimal.valueOf(695));
-
-        Product samsung10 = new Product();
-        samsung10.setName("Samsung S10");
-        samsung10.setPrice(BigDecimal.valueOf(600));
-
-        productService.save(iphone);
-        productService.save(samsung);
-        productService.save(samsung10);
+//        Product iphone = new Product();
+//        iphone.setName("iPhone 7");
+//        iphone.setPrice(BigDecimal.valueOf(499));
+//
+//        Product samsung = new Product();
+//        samsung.setName("Samsung S20");
+//        samsung.setPrice(BigDecimal.valueOf(695));
+//
+//        Product samsung10 = new Product();
+//        samsung10.setName("Samsung S10");
+//        samsung10.setPrice(BigDecimal.valueOf(600));
+//
+//        productService.save(iphone);
+//        productService.save(samsung);
+//        productService.save(samsung10);
         return "Done!";
     }
 }

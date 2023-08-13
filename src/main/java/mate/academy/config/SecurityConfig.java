@@ -31,22 +31,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/inject").permitAll()
-                .antMatchers(HttpMethod.POST, "/register").permitAll()
-                //.antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/*").hasRole("ADMIN")
+                .antMatchers("/login", "/register", "/inject").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
-                .formLogin()
-                .permitAll()
-                .and()
-                .httpBasic()
-                .and()
-                .csrf().disable();
+                .headers().frameOptions().disable();
     }
 }
