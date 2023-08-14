@@ -1,6 +1,6 @@
 package mate.academy.security.jwt;
 
-import  java.io.IOException;
+import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;

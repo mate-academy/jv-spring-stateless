@@ -36,9 +36,12 @@ public class AuthenticationController {
                 userRequestDto.getPassword());
         return userMapper.mapToDto(user);
     }
+
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto) throws AuthenticationException {
-        User user = authenticationService.login(userLoginDto.getLogin(), userLoginDto.getPassword());
+    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto)
+            throws AuthenticationException {
+        User user = authenticationService.login(userLoginDto.getLogin(),
+                userLoginDto.getPassword());
         String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles().stream()
                 .map(role -> role.getRoleName().name())
                 .collect(Collectors.toList()));
