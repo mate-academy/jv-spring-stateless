@@ -1,5 +1,6 @@
 package mate.academy.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -13,6 +14,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         return new Class[] {WebConfig.class};
     }
 
+    @NotNull
     @Override
     protected String[] getServletMappings() {
         return new String[] {"/"};
