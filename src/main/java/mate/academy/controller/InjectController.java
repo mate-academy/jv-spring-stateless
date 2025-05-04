@@ -34,6 +34,7 @@ public class InjectController {
         if (!roles.isEmpty()) {
             return "Injection was completed";
         }
+
         // Save roles
         roleService.save(new Role(Role.RoleName.ADMIN));
         roleService.save(new Role(Role.RoleName.USER));
@@ -41,18 +42,24 @@ public class InjectController {
 
         // save users
         User bob = new User();
-        bob.setEmail("bob");
+        bob.setEmail("bobUser");
         bob.setPassword("1234");
-        bob.setRoles(new HashSet<>(roles));
+        Role userRole = roleService.getRoleByName("USER");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+        bob.setRoles(userRoles);
         userService.save(bob);
 
         User alice = new User();
-        alice.setEmail("alice");
+        alice.setEmail("aliceAdmin");
         alice.setPassword("1234");
-        alice.setRoles(Set.of(roles.get(0)));
+        Role adminRole = roleService.getRoleByName("ADMIN");
+        Set<Role> adminRoles = new HashSet<>();
+        adminRoles.add(adminRole);
+        alice.setRoles(adminRoles);
         userService.save(alice);
 
-        // save products
+        //save products
         Product iphone = new Product();
         iphone.setName("iPhone 7");
         iphone.setPrice(BigDecimal.valueOf(499));
