@@ -1,6 +1,7 @@
 package mate.academy.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import mate.academy.model.User;
 import mate.academy.model.dto.UserRegistrationDto;
 import mate.academy.model.dto.UserResponseDto;
@@ -30,7 +31,7 @@ public class UserController {
         return userService.findAll()
                 .stream()
                 .map(userMapper::mapToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
