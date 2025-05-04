@@ -53,4 +53,14 @@ public class UserDaoImpl extends AbstractDao<User, Long> implements UserDao {
                 + " from database", e);
         }
     }
+
+    @Override
+    public List<User> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from User u join fetch u.roles ", User.class).getResultList();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get all entities: "
+                    + clazz.getSimpleName(), e);
+        }
+    }
 }
