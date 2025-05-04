@@ -26,6 +26,7 @@ public class UserMapper {
 
     public UserResponseDto mapToDto(User user) {
         UserResponseDto responseDto = new UserResponseDto();
+        responseDto.setId(user.getId());
         responseDto.setEmail(user.getEmail());
         List<RoleResponseDto> roles = user.getRoles()
                 .stream()
